@@ -1,14 +1,17 @@
 import './App.css'
 import { Decks } from '../features/decks/Decks.tsx'
 import { GlobalError } from './GlobalError/GlobalError.tsx'
-
-
+import {LinearLoader} from "../common/components/Loader/LinearLoader";
+import {useAppSelector} from "./store";
 
 export const App = () => {
-  return (
+ const status=useAppSelector(state=>state.app.status)
+    return (
     <div>
-      <Decks />
-      <GlobalError />
+        {status === 'loading' ? <LinearLoader/> : ''}
+            <Decks/>
+            <GlobalError />
+
     </div>
   )
 }
