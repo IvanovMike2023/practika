@@ -1,18 +1,29 @@
 import {Dispatch} from 'redux'
 import {decksAPI, UpdateDeckParams} from './decks-api.ts'
 import {addDeckAC, deleteDeckAC, setDecksAC, updateDeckAC} from './decks-reducer.ts'
-import {createLogger} from "vite";
-import {AppSetatusAC, AppSetErrorAC, AppSetErrorTC} from "../../app/app-reducer";
-import {isAxiosError} from "axios";
+import {AppSetatusAC} from "../../app/app-reducer";
 import {handleError} from "../../common/utils/handle-error";
 
-export const fetchDecksTC = () => (dispatch: Dispatch) => {
+// export const fetchDecksTC = () => async (dispatch: Dispatch) => {
+//     dispatch(AppSetatusAC('loading'))
+//     try {
+//         decksAPI.fetchDecks().then((res) => {
+//             dispatch(setDecksAC(res.data.items))
+//             dispatch(AppSetatusAC('succeeded'))
+//         })
+//     } catch (e) {
+//         dispatch(AppSetatusAC('failed'))
+//     }
+//}
+export const fetchDecksTC = () => async (dispatch: Dispatch) => {
     dispatch(AppSetatusAC('loading'))
-    decksAPI.fetchDecks().then((res) => {
+    try {
+        const res = await decksAPI.fetchDecks()
         dispatch(setDecksAC(res.data.items))
         dispatch(AppSetatusAC('succeeded'))
-
-    }).catch()
+    } catch (e) {
+        dispatch(AppSetatusAC('failed'))
+    }
 }
 
 export const addDeckTC = (name: string) => async (dispatch: Dispatch) => {
@@ -34,7 +45,7 @@ export const updateDeckTC = (params: UpdateDeckParams) => async (dispatch: Dispa
             dispatch(updateDeckAC(res.data))
         })
     } catch (e) {
-        handleError(e,dispatch)
+        handleError(e, dispatch)
     }
 }
 
