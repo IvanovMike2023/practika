@@ -35,7 +35,5 @@ export const AppSetErrorAC = (error) => ({
     type: 'SET-ERROR' as const,
     error
 })
-export const AppSetErrorTC=(e)=>(dispatch:Dispatch)=>{
-   return  dispatch(AppSetErrorAC(e))
-}
+
 type ActionsType = AppSetatusType | AppSetErrorType
