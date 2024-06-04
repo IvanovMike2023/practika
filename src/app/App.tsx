@@ -6,6 +6,7 @@ import {useAppSelector} from "./store";
 
 export const App = () => {
  const status=useAppSelector(state=>state.app.status)
+
     return (
     <div>
         {status === 'loading' ? <LinearLoader/> : ''}

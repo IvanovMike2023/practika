@@ -2,8 +2,9 @@ import {Dispatch} from 'redux'
 import {decksAPI, UpdateDeckParams} from './decks-api.ts'
 import {addDeckAC, deleteDeckAC, setDecksAC, updateDeckAC} from './decks-reducer.ts'
 import {createLogger} from "vite";
-import {AppSetatusAC} from "../../app/app-reducer";
+import {AppSetatusAC, AppSetErrorAC, AppSetErrorTC} from "../../app/app-reducer";
 import {isAxiosError} from "axios";
+import {handleError} from "../../common/utils/handle-error";
 
 export const fetchDecksTC = () => (dispatch: Dispatch) => {
     dispatch(AppSetatusAC('loading'))
@@ -33,11 +34,7 @@ export const updateDeckTC = (params: UpdateDeckParams) => async (dispatch: Dispa
             dispatch(updateDeckAC(res.data))
         })
     } catch (e) {
-     let mesageError:string
-        if(isAxiosError(e)){
-            mesageError=e.response? e.response.data.errorMessages[0].message : e.message
-        }else mesageError=(e as Error).message
-        console.log(mesageError)
+        handleError(e,dispatch)
     }
 }
 

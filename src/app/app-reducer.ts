@@ -1,3 +1,5 @@
+import {Dispatch} from "redux";
+
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 const initialState = {
@@ -11,6 +13,8 @@ export const appReducer = (state: AppStateType = initialState, action: ActionsTy
     switch (action.type) {
       case "SET-STATUS":
         return {...state,status: action.status}
+        case "SET-ERROR":
+        return {...state,error: action.error}
       default:
             return state
     }
@@ -23,4 +27,15 @@ export const AppSetatusAC = (status: RequestStatusType) => ({
     type: 'SET-STATUS' as const,
     status
 })
-type ActionsType = AppSetatusType
+type AppSetErrorType = {
+    type: 'SET-ERROR'
+    error: null | string
+}
+export const AppSetErrorAC = (error) => ({
+    type: 'SET-ERROR' as const,
+    error
+})
+export const AppSetErrorTC=(e)=>(dispatch:Dispatch)=>{
+   return  dispatch(AppSetErrorAC(e))
+}
+type ActionsType = AppSetatusType | AppSetErrorType
